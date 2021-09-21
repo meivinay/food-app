@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
+let validator = require("email-validator");
+const db_link = require("../secrets.js") 
+ 
 
-const db_link = "mongodb+srv://meivinay:s4JLcPLQsUFZCcV5@cluster0.b5krb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-
-mongoose.connect(db_link).then(function(){
+mongoose.connect(db_link.key).then(function(){
     console.log("db connected");
 })
 .catch(err=>{
@@ -19,7 +20,10 @@ const userSchema = new mongoose.Schema({
     email:{
         type:String,
         require:true,
-        unique:true
+        unique:true,
+        validate: function(){
+            return validator.validate(this.email);
+        }
     },
     password:{
         type:String,
